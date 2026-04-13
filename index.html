@@ -3,121 +3,779 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Oral Design Seoul Symposium 2026 — Registration Guide</title>
+  <title>Oral Design Seoul Symposium 2026</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --red: #e93319;
+      --red-dark: #b8260f;
+      --cream: #F7F4EE;
+      --ink: #1A1712;
+      --muted: #7A7060;
+      --border: #E2D9C8;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--cream);
+      font-family: 'DM Sans', sans-serif;
+      color: var(--ink);
+      overflow-x: hidden;
+      padding-bottom: 76px;
+    }
+
+    /* FLOATING CTA BAR */
+    .float-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: var(--ink);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 28px;
+      height: 64px;
+      transform: translateY(100%);
+      transition: transform .5s cubic-bezier(.77,0,.18,1);
+      box-shadow: 0 -1px 0 rgba(255,255,255,0.06);
+    }
+
+    .float-bar.show { transform: translateY(0); }
+
+    .float-bar-label {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 14px;
+      font-weight: 300;
+      color: rgba(255,255,255,0.45);
+      letter-spacing: .06em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-right: 20px;
+    }
+
+    .float-bar-label em {
+      font-style: italic;
+      color: rgba(255,255,255,0.65);
+    }
+
+    .float-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--red);
+      color: #fff;
+      text-decoration: none;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      padding: 11px 24px;
+      flex-shrink: 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .float-cta::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--red-dark);
+      transform: translateX(-101%);
+      transition: transform .35s cubic-bezier(.77,0,.18,1);
+    }
+
+    .float-cta:hover::after { transform: translateX(0); }
+
+    .float-cta-text { position: relative; z-index: 1; }
+
+    .float-arrow {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+    }
+
+    .float-arrow-line {
+      width: 14px;
+      height: 1px;
+      background: rgba(255,255,255,0.5);
+      transition: width .3s;
+    }
+
+    .float-arrow-head {
+      width: 5px;
+      height: 5px;
+      border-right: 1px solid rgba(255,255,255,0.5);
+      border-top: 1px solid rgba(255,255,255,0.5);
+      transform: rotate(45deg);
+      margin-left: -1px;
+    }
+
+    .float-cta:hover .float-arrow-line { width: 20px; }
+
+    @media (max-width: 480px) {
+      .float-bar { padding: 0 20px; height: 60px; }
+      .float-bar-label { font-size: 12px; }
+      .float-cta { padding: 10px 18px; font-size: 9px; }
+    }
+
+    /* HERO */
+    .hero {
+      position: relative;
+      width: 100%;
+      height: 100svh;
+      min-height: 560px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+    }
+
+    .hero-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transform: scale(1.08);
+      animation: heroZoom 12s ease-out forwards;
+    }
+
+    @keyframes heroZoom {
+      to { transform: scale(1); }
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(26,23,18,0.9) 0%, rgba(26,23,18,0.2) 55%, transparent 100%);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 0 28px 52px;
+      opacity: 0;
+      transform: translateY(24px);
+      animation: fadeUp 1s 0.6s ease forwards;
+    }
+
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-eyebrow {
+      font-size: 10px;
+      letter-spacing: .2em;
+      color: var(--red);
+      text-transform: uppercase;
+      font-weight: 500;
+      margin-bottom: 14px;
+    }
+
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(38px, 10vw, 64px);
+      font-weight: 300;
+      color: #fff;
+      line-height: 1.05;
+      margin-bottom: 18px;
+    }
+
+    .hero-title em {
+      font-style: italic;
+      color: #f0c8b8;
+    }
+
+    .hero-meta {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .hero-date {
+      font-size: 12px;
+      color: rgba(255,255,255,0.65);
+      letter-spacing: .06em;
+    }
+
+    .hero-dot {
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: var(--red);
+      flex-shrink: 0;
+    }
+
+    .hero-scroll {
+      margin-top: 36px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 10px;
+      letter-spacing: .14em;
+      color: rgba(255,255,255,0.4);
+      text-transform: uppercase;
+      background: none;
+      border: none;
+      cursor: pointer;
+      transition: color .3s;
+    }
+
+    .hero-scroll:hover { color: rgba(255,255,255,0.75); }
+
+    .scroll-line {
+      width: 32px;
+      height: 1px;
+      background: currentColor;
+      animation: linePulse 2s ease-in-out infinite;
+    }
+
+    @keyframes linePulse {
+      0%, 100% { width: 32px; opacity: 1; }
+      50% { width: 16px; opacity: 0.3; }
+    }
+
+    /* WRAP */
+    .wrap {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+    }
+
+    /* INTRO */
+    .intro-block {
+      padding: 52px 0 40px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section-label {
+      font-size: 10px;
+      letter-spacing: .18em;
+      color: var(--red);
+      text-transform: uppercase;
+      font-weight: 500;
+      margin-bottom: 18px;
+    }
+
+    .intro-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(20px, 4.5vw, 26px);
+      font-weight: 300;
+      line-height: 1.6;
+      color: var(--ink);
+    }
+
+    .intro-text strong {
+      font-weight: 600;
+      font-style: italic;
+      color: var(--red);
+    }
+
+    /* STEPS */
+    .steps { padding-top: 4px; }
+
+    .step {
+      padding: 36px 0;
+      border-bottom: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: 52px 1fr;
+      gap: 24px;
+    }
+
+    .step-left {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 2px;
+    }
+
+    .step-num {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: var(--ink);
+      color: #fff;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 16px;
+      font-weight: 400;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: background .3s ease, transform .3s ease;
+    }
+
+    .step:hover .step-num {
+      background: var(--red);
+      transform: scale(1.1);
+    }
+
+    .step-connector {
+      width: 1px;
+      flex: 1;
+      background: var(--border);
+      margin-top: 8px;
+      min-height: 20px;
+    }
+
+    .step-body { padding-top: 2px; }
+
+    .step-tag {
+      font-size: 9px;
+      letter-spacing: .18em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .step-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 23px;
+      font-weight: 600;
+      color: var(--ink);
+      line-height: 1.15;
+      margin-bottom: 10px;
+    }
+
+    .step-desc {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.85;
+    }
+
+    .step-desc strong { color: var(--ink); font-weight: 500; }
+
+    /* PROGRAM CARDS */
+    .prog-cards {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .prog-card {
+      overflow: hidden;
+      border: 1px solid var(--border);
+      transition: border-color .25s, transform .25s;
+      position: relative;
+    }
+
+    .prog-card::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 3px;
+      background: transparent;
+      transition: background .25s;
+    }
+
+    .prog-card:hover { transform: translateX(5px); border-color: var(--ink); }
+    .prog-card:hover::before { background: var(--ink); }
+    .prog-card.accent:hover { border-color: var(--red); }
+    .prog-card.accent:hover::before { background: var(--red); }
+    .prog-card.warm:hover { border-color: #8B7355; }
+    .prog-card.warm:hover::before { background: #8B7355; }
+
+    .prog-head {
+      padding: 11px 14px 11px 17px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .prog-card:not(.accent):not(.warm) .prog-head { background: var(--ink); }
+    .prog-card.accent .prog-head { background: var(--red); }
+    .prog-card.warm .prog-head { background: #4A4238; }
+
+    .prog-name { font-size: 13px; font-weight: 500; color: #fff; letter-spacing: .03em; }
+    .prog-date { font-size: 10px; color: rgba(255,255,255,.5); letter-spacing: .06em; }
+
+    .prog-body { padding: 13px 14px 14px 17px; background: #fff; }
+    .prog-sub { font-size: 13px; font-weight: 500; color: var(--ink); margin-bottom: 4px; }
+    .prog-detail { font-size: 12px; color: var(--muted); line-height: 1.65; }
+
+    .tag-pill {
+      display: inline-block;
+      margin-top: 9px;
+      font-size: 9px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      font-weight: 600;
+      padding: 3px 9px;
+    }
+
+    .pill-red { background: #FEF0ED; color: var(--red-dark); border: 1px solid #f4bfb4; }
+    .pill-blue { background: #EAF0FA; color: #1B4F8A; border: 1px solid #94B8E0; }
+
+    /* PAYMENT */
+    .pay-chips {
+      display: flex;
+      gap: 7px;
+      flex-wrap: wrap;
+      margin-top: 13px;
+    }
+
+    .pay-chip {
+      font-size: 11px;
+      font-weight: 400;
+      padding: 5px 13px;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      letter-spacing: .04em;
+      transition: border-color .2s, color .2s, background .2s;
+      cursor: default;
+    }
+
+    .pay-chip:hover {
+      border-color: var(--ink);
+      color: var(--ink);
+      background: #fff;
+    }
+
+    /* CTA */
+    .cta-section {
+      padding: 60px 0 24px;
+      text-align: center;
+    }
+
+    .cta-eyebrow {
+      font-size: 10px;
+      letter-spacing: .18em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 28px;
+    }
+
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 16px;
+      background: var(--ink);
+      color: #fff;
+      text-decoration: none;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      padding: 18px 44px;
+      position: relative;
+      overflow: hidden;
+      transition: color .3s;
+    }
+
+    .cta-btn::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--red);
+      transform: translateX(-101%);
+      transition: transform .45s cubic-bezier(.77,0,.18,1);
+    }
+
+    .cta-btn:hover::after { transform: translateX(0); }
+
+    .cta-btn-text { position: relative; z-index: 1; }
+
+    .cta-arrow {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      gap: 0;
+    }
+
+    .cta-arrow-line {
+      width: 20px;
+      height: 1px;
+      background: rgba(255,255,255,0.45);
+      transition: width .3s ease;
+    }
+
+    .cta-arrow-head {
+      width: 6px;
+      height: 6px;
+      border-right: 1px solid rgba(255,255,255,0.45);
+      border-top: 1px solid rgba(255,255,255,0.45);
+      transform: rotate(45deg);
+      margin-left: -1px;
+    }
+
+    .cta-btn:hover .cta-arrow-line { width: 30px; }
+
+    .cta-url {
+      margin-top: 20px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 13px;
+      color: var(--muted);
+      letter-spacing: .1em;
+    }
+
+    /* FOOTER */
+    .footer {
+      padding-top: 32px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .footer-brand {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 13px;
+      color: var(--red);
+      letter-spacing: .1em;
+    }
+
+    .footer-note {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    /* SCROLL REVEAL */
+    .reveal {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity .65s ease, transform .65s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* MOBILE */
+    @media (max-width: 480px) {
+      .step { grid-template-columns: 44px 1fr; gap: 16px; }
+      .step-num { width: 34px; height: 34px; font-size: 14px; }
+      .hero-content { padding: 0 20px 44px; }
+      .wrap { padding: 0 20px 60px; }
+      .cta-btn { padding: 16px 32px; font-size: 10px; }
+      .footer { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
 </head>
-<body style="margin:0;padding:0;background:#F7F4EE;">
+<body>
 
-<div style="font-family:'-apple-system','BlinkMacSystemFont','Helvetica Neue','Arial',sans-serif;background:#F7F4EE;padding:24px 20px 48px;max-width:640px;margin:0 auto;">
-
-  <!-- 메인 비주얼 -->
-  <img src="oral_image.jpg" alt="Oral Design Seoul Symposium 2026" style="width:100%;border-radius:10px;display:block;margin-bottom:24px;">
-
-  <!-- 타이틀 섹션 -->
-  <div style="text-align:center;margin-bottom:28px;">
-    <div style="font-size:11px;letter-spacing:.14em;color:#e93319;font-weight:600;text-transform:uppercase;margin-bottom:10px;">Step-by-Step Registration Guide</div>
-    <div style="font-family:'Georgia','Times New Roman',serif;font-size:28px;font-weight:700;color:#1A1712;line-height:1.25;margin-bottom:10px;">Oral Design Seoul<br>Symposium 2026</div>
-    <div style="width:36px;height:2px;background:#e93319;margin:0 auto 12px;"></div>
-    <div style="font-size:13px;color:#7A7060;">September 17&#8211;20, 2026 &nbsp;&middot;&nbsp; Seoul, Korea</div>
-  </div>
-
-  <!-- 인트로 -->
-  <div style="background:#fff;border-radius:8px;padding:16px 18px;margin-bottom:24px;border-left:3px solid #e93319;">
-    <div style="font-size:13px;color:#4A4238;line-height:1.75;">Please follow the steps below to complete your registration. Hands-on classes have <strong style="color:#e93319;">strictly limited seats</strong> &#8212; early registration is strongly encouraged.</div>
-  </div>
-
-  <!-- Step 1 -->
-  <div style="background:#fff;border-radius:10px;padding:18px;margin-bottom:12px;border:1px solid #E2D9C8;">
-    <div style="display:inline-block;background:#e93319;color:#fff;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 10px;border-radius:2px;margin-bottom:10px;">Step 01</div>
-    <div style="font-size:16px;font-weight:700;color:#1A1712;margin-bottom:6px;">Sign Up</div>
-    <div style="font-size:13px;color:#6B6257;line-height:1.75;">Visit <strong style="color:#1A1712;">oraldesignkorea.com</strong> and click <em>Sign Up</em> at the top right corner. Fill in your personal information and create an account.</div>
-  </div>
-
-  <!-- Step 2 -->
-  <div style="background:#fff;border-radius:10px;padding:18px;margin-bottom:12px;border:1px solid #E2D9C8;">
-    <div style="display:inline-block;background:#e93319;color:#fff;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 10px;border-radius:2px;margin-bottom:10px;">Step 02</div>
-    <div style="font-size:16px;font-weight:700;color:#1A1712;margin-bottom:6px;">Log In</div>
-    <div style="font-size:13px;color:#6B6257;line-height:1.75;">Log in with your newly created account. The Registration section will then become accessible.</div>
-  </div>
-
-  <!-- Step 3 -->
-  <div style="background:#fff;border-radius:10px;padding:18px;margin-bottom:12px;border:1px solid #E2D9C8;">
-    <div style="display:inline-block;background:#e93319;color:#fff;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 10px;border-radius:2px;margin-bottom:10px;">Step 03</div>
-    <div style="font-size:16px;font-weight:700;color:#1A1712;margin-bottom:4px;">Select Program</div>
-    <div style="font-size:12px;color:#9A907F;margin-bottom:14px;">Choose one or more programs to attend</div>
-
-    <!-- Lectures -->
-    <div style="border:1px solid #1A1712;margin-bottom:8px;">
-      <div style="background:#1A1712;padding:10px 14px;">
-        <div style="font-size:10px;color:#B0A080;letter-spacing:.1em;text-transform:uppercase;margin-bottom:3px;">Sep 19&#8211;20</div>
-        <div style="font-size:14px;font-weight:700;color:#fff;">Lectures</div>
+  <!-- HERO -->
+  <section class="hero">
+    <img class="hero-img" src="oral_image.jpg" alt="Oral Design Seoul Symposium 2026">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <div class="hero-eyebrow">Step-by-Step Registration Guide</div>
+      <h1 class="hero-title">Oral Design<br><em>Seoul</em> Symposium<br>2026</h1>
+      <div class="hero-meta">
+        <span class="hero-date">September 17–20, 2026</span>
+        <div class="hero-dot"></div>
+        <span class="hero-date">Seoul, Korea</span>
       </div>
-      <div style="padding:12px 14px;background:#FAFAF8;">
-        <div style="font-size:13px;color:#1A1712;font-weight:600;margin-bottom:4px;">14 talks over 2 days</div>
-        <div style="font-size:12px;color:#9A907F;line-height:1.6;">Presentations by leading international clinicians and technicians across ceramics, implantology, and digital dentistry.</div>
-      </div>
+      <button class="hero-scroll" onclick="document.querySelector('.intro-block').scrollIntoView({behavior:'smooth'})">
+        <span class="scroll-line"></span>
+        Scroll to register
+      </button>
+    </div>
+  </section>
+
+  <div class="wrap">
+
+    <!-- INTRO -->
+    <div class="intro-block reveal">
+      <div class="section-label">How to register</div>
+      <p class="intro-text">
+        Follow the six steps below to secure your place at the symposium. Hands-on classes carry <strong>strictly limited seats</strong> and are expected to sell out quickly.
+      </p>
     </div>
 
-    <!-- Hands-on -->
-    <div style="border:1px solid #e93319;margin-bottom:8px;">
-      <div style="background:#e93319;padding:10px 14px;">
-        <div style="font-size:10px;color:#ffd0c4;letter-spacing:.1em;text-transform:uppercase;margin-bottom:3px;">Sep 17&#8211;18</div>
-        <div style="font-size:14px;font-weight:700;color:#fff;">Hands-on</div>
+    <!-- STEPS -->
+    <div class="steps">
+
+      <div class="step reveal">
+        <div class="step-left">
+          <div class="step-num">1</div>
+          <div class="step-connector"></div>
+        </div>
+        <div class="step-body">
+          <div class="step-tag">Step 01</div>
+          <div class="step-title">Sign Up</div>
+          <div class="step-desc">Visit <strong>oraldesignkorea.com</strong> and click <em>Sign Up</em> at the top right corner. Fill in your personal information and create an account.</div>
+        </div>
       </div>
-      <div style="padding:12px 14px;background:#FAFAF8;">
-        <div style="font-size:13px;color:#1A1712;font-weight:600;margin-bottom:4px;">4 classes &nbsp;&middot;&nbsp; Max 15 participants each</div>
-        <div style="font-size:12px;color:#9A907F;line-height:1.6;margin-bottom:8px;">Intensive small-group workshops with direct instructor guidance. Practical sessions designed for immediate clinical application.</div>
-        <div style="font-size:11px;letter-spacing:.06em;font-weight:600;padding:4px 10px;text-transform:uppercase;background:#FEF0ED;color:#c02a12;display:inline-block;border:1px solid #f4bfb4;">Limited seats &#8212; sells out quickly</div>
+
+      <div class="step reveal">
+        <div class="step-left">
+          <div class="step-num">2</div>
+          <div class="step-connector"></div>
+        </div>
+        <div class="step-body">
+          <div class="step-tag">Step 02</div>
+          <div class="step-title">Log In</div>
+          <div class="step-desc">Log in with your newly created account. The Registration section will then become accessible.</div>
+        </div>
       </div>
+
+      <div class="step reveal">
+        <div class="step-left">
+          <div class="step-num">3</div>
+          <div class="step-connector"></div>
+        </div>
+        <div class="step-body">
+          <div class="step-tag">Step 03</div>
+          <div class="step-title">Select Program</div>
+          <div class="step-desc">Choose one or more programs to attend.</div>
+          <div class="prog-cards">
+            <div class="prog-card">
+              <div class="prog-head">
+                <span class="prog-name">Lectures</span>
+                <span class="prog-date">Sep 19–20</span>
+              </div>
+              <div class="prog-body">
+                <div class="prog-sub">14 talks over 2 days</div>
+                <div class="prog-detail">Presentations by leading international clinicians and technicians across ceramics, implantology, and digital dentistry.</div>
+              </div>
+            </div>
+            <div class="prog-card accent">
+              <div class="prog-head">
+                <span class="prog-name">Hands-on</span>
+                <span class="prog-date">Sep 17–18</span>
+              </div>
+              <div class="prog-body">
+                <div class="prog-sub">4 classes · Max 15 participants each</div>
+                <div class="prog-detail">Intensive small-group workshops with direct instructor guidance. Designed for immediate clinical application.</div>
+                <span class="tag-pill pill-red">Limited seats — sells out quickly</span>
+              </div>
+            </div>
+            <div class="prog-card warm">
+              <div class="prog-head">
+                <span class="prog-name">Gala Dinner</span>
+                <span class="prog-date">Sep 19 evening</span>
+              </div>
+              <div class="prog-body">
+                <div class="prog-sub">Courtyard by Marriott Seoul Botanic Park</div>
+                <div class="prog-detail">An evening of networking with global peers in an elegant setting. Formal dress recommended.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step reveal">
+        <div class="step-left">
+          <div class="step-num">4</div>
+          <div class="step-connector"></div>
+        </div>
+        <div class="step-body">
+          <div class="step-tag">Step 04</div>
+          <div class="step-title">Submit Registration</div>
+          <div class="step-desc">Confirm your selections in the Registration section and submit your application online. On-site registration is available only if seats remain.</div>
+        </div>
+      </div>
+
+      <div class="step reveal">
+        <div class="step-left">
+          <div class="step-num">5</div>
+          <div class="step-connector"></div>
+        </div>
+        <div class="step-body">
+          <div class="step-tag">Step 05</div>
+          <div class="step-title">Payment</div>
+          <div class="step-desc">International participants: pay via <strong>PayPal</strong>. Supports major cards.</div>
+          <div class="pay-chips">
+            <span class="pay-chip">Visa</span>
+            <span class="pay-chip">Mastercard</span>
+            <span class="pay-chip">Amex</span>
+            <span class="pay-chip">PayPal</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="step reveal">
+        <div class="step-left">
+          <div class="step-num">6</div>
+        </div>
+        <div class="step-body">
+          <div class="step-tag">Step 06</div>
+          <div class="step-title">Confirmation</div>
+          <div class="step-desc">A confirmation email will be sent upon successful registration. Keep this email as proof of your booking.</div>
+        </div>
+      </div>
+
     </div>
 
-    <!-- Gala Dinner -->
-    <div style="border:1px solid #4A4238;">
-      <div style="background:#4A4238;padding:10px 14px;">
-        <div style="font-size:10px;color:#C8B89A;letter-spacing:.1em;text-transform:uppercase;margin-bottom:3px;">Sep 19 evening</div>
-        <div style="font-size:14px;font-weight:700;color:#fff;">Gala Dinner</div>
-      </div>
-      <div style="padding:12px 14px;background:#FAFAF8;">
-        <div style="font-size:13px;color:#1A1712;font-weight:600;margin-bottom:4px;">Courtyard by Marriott Seoul Botanic Park</div>
-        <div style="font-size:12px;color:#9A907F;line-height:1.6;">An evening of networking with global peers in an elegant setting. Formal dress recommended.</div>
-      </div>
+    <!-- CTA -->
+    <div class="cta-section reveal">
+      <div class="cta-eyebrow">Ready to join?</div>
+      <a href="https://oraldesignkorea.com/#registration" target="_blank" class="cta-btn">
+        <span class="cta-btn-text">Register Now</span>
+        <div class="cta-arrow">
+          <div class="cta-arrow-line"></div>
+          <div class="cta-arrow-head"></div>
+        </div>
+      </a>
+      <div class="cta-url">oraldesignkorea.com</div>
     </div>
+
+    <!-- FOOTER -->
+    <div class="footer reveal">
+      <div class="footer-brand">Oral Design Seoul · 2026</div>
+      <div class="footer-note">For inquiries, contact the organizing committee via the website.</div>
+    </div>
+
   </div>
 
-  <!-- Step 4 -->
-  <div style="background:#fff;border-radius:10px;padding:18px;margin-bottom:12px;border:1px solid #E2D9C8;">
-    <div style="display:inline-block;background:#e93319;color:#fff;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 10px;border-radius:2px;margin-bottom:10px;">Step 04</div>
-    <div style="font-size:16px;font-weight:700;color:#1A1712;margin-bottom:6px;">Submit Registration</div>
-    <div style="font-size:13px;color:#6B6257;line-height:1.75;">Confirm your selections and submit your application online. On-site registration is available only if seats remain.</div>
+  <!-- FLOATING CTA BAR -->
+  <div class="float-bar" id="floatBar">
+    <div class="float-bar-label">Oral Design Seoul &middot; <em>Sep 17&ndash;20, 2026</em></div>
+    <a href="https://oraldesignkorea.com/#registration" target="_blank" class="float-cta">
+      <span class="float-cta-text">Register Now</span>
+      <div class="float-arrow">
+        <div class="float-arrow-line"></div>
+        <div class="float-arrow-head"></div>
+      </div>
+    </a>
   </div>
 
-  <!-- Step 5 -->
-  <div style="background:#fff;border-radius:10px;padding:18px;margin-bottom:12px;border:1px solid #E2D9C8;">
-    <div style="display:inline-block;background:#e93319;color:#fff;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 10px;border-radius:2px;margin-bottom:10px;">Step 05</div>
-    <div style="font-size:16px;font-weight:700;color:#1A1712;margin-bottom:6px;">Payment</div>
-    <div style="font-size:13px;color:#6B6257;line-height:1.75;margin-bottom:8px;">International participants: pay via <strong style="color:#1A1712;">PayPal</strong>. Supports Visa, Mastercard, and American Express.</div>
-    <div style="font-size:11px;letter-spacing:.06em;font-weight:600;padding:5px 10px;border-radius:3px;text-transform:uppercase;background:#EAF0FA;color:#1B4F8A;display:inline-block;">Visa &middot; Mastercard &middot; Amex accepted</div>
-  </div>
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => {
+            entry.target.classList.add('visible');
+          }, 60);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
 
-  <!-- Step 6 -->
-  <div style="background:#fff;border-radius:10px;padding:18px;margin-bottom:28px;border:1px solid #E2D9C8;">
-    <div style="display:inline-block;background:#e93319;color:#fff;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 10px;border-radius:2px;margin-bottom:10px;">Step 06</div>
-    <div style="font-size:16px;font-weight:700;color:#1A1712;margin-bottom:6px;">Confirmation</div>
-    <div style="font-size:13px;color:#6B6257;line-height:1.75;">A confirmation email will be sent upon successful registration. Keep this email as proof of your booking.</div>
-  </div>
+    document.querySelectorAll('.reveal').forEach((el, i) => {
+      el.style.transitionDelay = (i * 0.05) + 's';
+      observer.observe(el);
+    });
 
-  <!-- CTA 버튼 -->
-  <div style="text-align:center;margin-bottom:32px;">
-    <a href="https://oraldesignkorea.com/#resistration" target="_blank" style="display:inline-block;background:#e93319;color:#fff;font-size:13px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;padding:16px 44px;border-radius:3px;">&#49888;&#52397; &#48148;&#47196;&#44032;&#44592;</a>
-    <div style="font-size:11px;color:#9A907F;margin-top:10px;letter-spacing:.04em;">oraldesignkorea.com &nbsp;&middot;&nbsp; Registration opens now</div>
-  </div>
+    // Float bar: hero 지나면 등장
+    const floatBar = document.getElementById('floatBar');
+    const hero = document.querySelector('.hero');
 
-  <!-- 푸터 -->
-  <div style="text-align:center;padding-top:20px;border-top:1px solid #E2D9C8;">
-    <div style="width:36px;height:2px;background:#e93319;margin:0 auto 12px;"></div>
-    <div style="font-family:'Georgia','Times New Roman',serif;font-size:14px;color:#e93319;letter-spacing:.1em;margin-bottom:6px;">oraldesignkorea.com</div>
-    <div style="font-size:11px;color:#9A907F;">For inquiries, please contact the organizing committee via the website.</div>
-  </div>
+    const heroObs = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) {
+          floatBar.classList.add('show');
+        } else {
+          floatBar.classList.remove('show');
+        }
+      });
+    }, { threshold: 0.1 });
 
-</div>
+    heroObs.observe(hero);
+  </script>
+
 </body>
 </html>
